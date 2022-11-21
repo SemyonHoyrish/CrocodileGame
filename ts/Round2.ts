@@ -1,7 +1,14 @@
 import { IRound } from "./IRound";
 
 export class Round2 implements IRound {
+
+    private roundDiv: Element | null = null;
+    private roundControlDiv: Element | null = null;
+
     start(roundDiv: Element, roundControlDiv: Element): void {
+
+        this.roundDiv = roundDiv;
+        this.roundControlDiv = roundControlDiv;
         
         class Card {
             word: string;
@@ -161,26 +168,46 @@ export class Round2 implements IRound {
         roundControlDiv.querySelectorAll(".word_answer_button").forEach(btn => {
             btn.addEventListener("click", () => {
                 if (current_card_id != 0) {
+
+                    // const cardWordView = roundDiv.querySelector(".card_word_view");
     
                     if (btn.classList.contains("correct")) {
                         current_card.classList.add("correct");
+                        cardWordView.classList.add("correct");
                         roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)?.classList.add("correct");
                     } else if (btn.classList.contains("skip")) {
                         current_card.classList.add("skip");
+                        cardWordView.classList.add("skip");
                         roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)?.classList.add("skip");
                     } else if (btn.classList.contains("incorrect")) {
                         current_card.classList.add("incorrect");
+                        cardWordView.classList.add("incorrect");
                         roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)?.classList.add("incorrect");
                     }
     
-                    cardWordView.classList.remove("active");
-    
+                    setTimeout(() => {
+                        cardWordView.classList.remove("active");
+                    }, 200);
+                    setTimeout(() => {
+                        cardWordView.classList.remove("correct");
+                        cardWordView.classList.remove("skip");
+                        cardWordView.classList.remove("incorrect");        
+                    }, 1000);
+                    
                 }
             });
         });
     
     
 
+    }
+
+    clear(): void {
+        if (this.roundDiv != null)
+            this.roundDiv.innerHTML = "";
+        
+        if (this.roundControlDiv != null)
+            this.roundControlDiv.innerHTML = "";
     }
 
 }

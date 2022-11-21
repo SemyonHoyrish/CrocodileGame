@@ -8,6 +8,18 @@ html, body {
 }
 
 
+
+.controls {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    flex-direction: column;
+}
+.controls .start_round_button {
+    height: 30px;
+    font-size: 18px;
+}
+
 /* ROUND 0 */
 
 /* .round {
@@ -16,7 +28,7 @@ html, body {
     display: flex;
 } */
 
-.logo-animation {
+.round_0 .logo-animation {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,13 +41,13 @@ html, body {
     left: 0;
 }
 
-.logo-animation img {
+.round_0 .logo-animation img {
     animation: logo_animation_img 1s;
     width: 500px;
     transform: translateX(-100px);
 }
 
-.logo-animation h1 {
+.round_0 .logo-animation h1 {
     animation: logo_animation_text 1s;
     font-size: 80px;
     transform: translateX(50px);
@@ -78,17 +90,6 @@ html, body {
 
 /* ROUND 2 */
 
-.controls {
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
-    flex-direction: column;
-}
-.controls .start_round_button {
-    height: 30px;
-    font-size: 18px;
-}
-
 
 .category {
     display: flex;
@@ -96,12 +97,21 @@ html, body {
     align-items: center;
 }
 
+.round_2 .card {
+    height: 200px;
+    width: 400px;
+    font-size: 50px;
+}
 
-
-
-.card {
+.roundControl .card {
     height: 100px;
     width: 200px;
+    font-size: 22px;
+}
+
+.card {
+
+
     background-color: rgb(4, 146, 146);
     border-radius: 15px;
 
@@ -111,7 +121,6 @@ html, body {
 
     color: white;
 
-    font-size: 22px;
 
     margin: 10px;
 
@@ -123,31 +132,43 @@ html, body {
     text-align: center;
 }
 
+.round_2 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-.card.correct {
+
+.round_2 .card.correct {
     background-color: green;
 }
-.card.skip {
+.round_2 .card.skip {
     background-color: grey;
 }
-.card.incorrect {
+.round_2 .card.incorrect {
     background-color: red;
 }
 
-.round .card .points {
+.round_2 .card .points {
     display: block;
 }
-.round .card .word {
+.round_2 .card .word {
     display: none;
 }
 
 
-.round .card {
+.round_2 .card {
     transition: all 1s;
     /* position: relative; */
 }
 
-.round .card.card.shown {
+.round_2 .card.card.shown {
     /* position: absolute; */
     top: 0;
     right: 0;
@@ -159,25 +180,25 @@ html, body {
     margin: 0;
 }
 
-.round .card.shown .points {
+.round_2 .card.shown .points {
     display: none;
 }
-.round .card.shown .word {
+.round_2 .card.shown .word {
     display: block;
 }
 
 
-.round .card_word_view {
+.round_2 .card_word_view {
     position: absolute;
     top: 50%;
     right: 50%;
     bottom: 50%;
     left: 50%;
-    background-color: black;
+    background-color: rgb(106, 215, 184);
     height: 0px;
     width: 0px;
     font-size: 0px;
-    color: #ffffff;
+    color: #0f2b00;
     transition: all 1s;
 
     display: flex;
@@ -186,14 +207,16 @@ html, body {
     align-items: center;
     /* text-align: center; */
 }
-.round .card_word_view .category-info {
+.round_2 .card_word_view .category-info {
     position: absolute;
     top: 0;
 }
-.round .card_word_view .category {
+.round_2 .card_word_view .category {
+    transition: all 1s;
     display: inline;
 }
-.round .card_word_view .word {
+.round_2 .card_word_view .word {
+    transition: all 1s;
     height: 100%;
     width: 100%;
     display: flex;
@@ -201,16 +224,30 @@ html, body {
     align-items: center;
     position: absolute;
 }
-.round .card_word_view.active {
+.round_2 .card_word_view.active {
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    font-size: 30px;
+}
+.round_2 .card_word_view.active .category {
+    font-size: 60px;
+}
+.round_2 .card_word_view.active .word {
+    font-size: 100px;
 }
 
+.round_2 .card_word_view.correct {
+    background-color: green;
+}
+.round_2 .card_word_view.skip {
+    background-color: grey;
+}
+.round_2 .card_word_view.incorrect {
+    background-color: red;
+}
 
 .roundControl .card {
     cursor: pointer;

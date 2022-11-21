@@ -2,12 +2,48 @@ define("IRound", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
 });
+define("Round0", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Round0 = void 0;
+    class Round0 {
+        constructor() {
+            this.roundDiv = null;
+            this.roundControlDiv = null;
+        }
+        start(roundDiv, roundControlDiv) {
+            this.roundDiv = roundDiv;
+            this.roundControlDiv = roundControlDiv;
+            roundDiv.innerHTML = "";
+            roundControlDiv.innerHTML = "";
+            roundDiv.innerHTML = `
+            <div class="logo-animation"> 
+                <img src="./media/images/crocodile-transparent-png.png" />
+                <h1>Игра - крокодил</h1>
+            </div>
+        `;
+        }
+        clear() {
+            if (this.roundDiv != null)
+                this.roundDiv.innerHTML = "";
+            if (this.roundControlDiv != null)
+                this.roundControlDiv.innerHTML = "";
+        }
+    }
+    exports.Round0 = Round0;
+});
 define("Round2", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Round2 = void 0;
     class Round2 {
+        constructor() {
+            this.roundDiv = null;
+            this.roundControlDiv = null;
+        }
         start(roundDiv, roundControlDiv) {
+            this.roundDiv = roundDiv;
+            this.roundControlDiv = roundControlDiv;
             class Card {
                 constructor(word, points) {
                     this.word = word;
@@ -138,46 +174,54 @@ define("Round2", ["require", "exports"], function (require, exports) {
                 btn.addEventListener("click", () => {
                     var _a, _b, _c;
                     if (current_card_id != 0) {
+                        // const cardWordView = roundDiv.querySelector(".card_word_view");
                         if (btn.classList.contains("correct")) {
                             current_card.classList.add("correct");
+                            cardWordView.classList.add("correct");
                             (_a = roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)) === null || _a === void 0 ? void 0 : _a.classList.add("correct");
                         }
                         else if (btn.classList.contains("skip")) {
                             current_card.classList.add("skip");
+                            cardWordView.classList.add("skip");
                             (_b = roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)) === null || _b === void 0 ? void 0 : _b.classList.add("skip");
                         }
                         else if (btn.classList.contains("incorrect")) {
                             current_card.classList.add("incorrect");
+                            cardWordView.classList.add("incorrect");
                             (_c = roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)) === null || _c === void 0 ? void 0 : _c.classList.add("incorrect");
                         }
-                        cardWordView.classList.remove("active");
+                        setTimeout(() => {
+                            cardWordView.classList.remove("active");
+                        }, 200);
+                        setTimeout(() => {
+                            cardWordView.classList.remove("correct");
+                            cardWordView.classList.remove("skip");
+                            cardWordView.classList.remove("incorrect");
+                        }, 1000);
                     }
                 });
             });
         }
+        clear() {
+            if (this.roundDiv != null)
+                this.roundDiv.innerHTML = "";
+            if (this.roundControlDiv != null)
+                this.roundControlDiv.innerHTML = "";
+        }
     }
     exports.Round2 = Round2;
 });
-define("main", ["require", "exports", "Round2"], function (require, exports, Round2_1) {
+define("main", ["require", "exports", "Round0", "Round2"], function (require, exports, Round0_1, Round2_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    const round_0 = (roundDiv, controlRoundDiv) => {
-        roundDiv.innerHTML = "";
-        controlRoundDiv.innerHTML = "";
-        roundDiv.innerHTML = `
-        <div class="logo-animation"> 
-            <img src="./media/images/crocodile-transparent-png.png" />
-            <h1>Игра - крокодил</h1>
-        </div>
-    `;
-    };
     const main = () => {
         const startButton = document.querySelector("#start_button");
         if (startButton == null)
             return;
+        let lastRound = null;
         startButton.addEventListener("click", () => {
             var _a;
-            var gameWindow = window.open("", "", "width=1000,height=600");
+            var gameWindow = window.open("", "", "width=1920,height=1080;fullscreen=1");
             if (gameWindow == null) {
                 console.log("ERROR: cant open window");
                 return;
@@ -193,7 +237,8 @@ define("main", ["require", "exports", "Round2"], function (require, exports, Rou
             <title>Crocodile game</title>
         </head>
 
-        <div class="round"></div>
+        <div class="round_0"></div>
+        <div class="round_2"></div>
 
         </body>
         </html>
@@ -207,20 +252,31 @@ define("main", ["require", "exports", "Round2"], function (require, exports, Rou
                     const roundNumber = parseInt(val);
                     console.log(roundNumber);
                     const roundControlDiv = document.querySelector(".roundControl");
-                    const roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round");
-                    if (roundDiv == null)
-                        return;
+                    // const roundDiv = gameWindow?.document.querySelector(".round");
                     if (roundControlDiv == null)
                         return;
+                    let roundDiv;
+                    if (lastRound !== null)
+                        lastRound.clear();
                     switch (roundNumber) {
                         case 0:
-                            round_0(roundDiv, roundControlDiv);
+                            roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round_0");
+                            if (roundDiv == null)
+                                return;
+                            lastRound = new Round0_1.Round0();
+                            lastRound.start(roundDiv, roundControlDiv);
+                            // round_0(roundDiv, roundControlDiv);
                             break;
                         case 2:
                             // round_2(roundDiv, roundControlDiv);
-                            new Round2_1.Round2().start(roundDiv, roundControlDiv);
+                            roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round_2");
+                            if (roundDiv == null)
+                                return;
+                            lastRound = new Round2_1.Round2();
+                            lastRound.start(roundDiv, roundControlDiv);
                             break;
                         default:
+                            lastRound = null;
                             break;
                     }
                 });

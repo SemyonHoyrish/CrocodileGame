@@ -1,17 +1,6 @@
+import { IRound } from "./IRound";
+import { Round0 } from "./Round0";
 import { Round2 } from "./Round2";
-
-const round_0 = (roundDiv: Element, controlRoundDiv: Element): void => {
-    roundDiv.innerHTML = "";
-    controlRoundDiv.innerHTML = "";
-
-    roundDiv.innerHTML = `
-        <div class="logo-animation"> 
-            <img src="./media/images/crocodile-transparent-png.png" />
-            <h1>Игра - крокодил</h1>
-        </div>
-    `;
-
-}
 
 const main = () => {
 
@@ -19,8 +8,10 @@ const main = () => {
 
     if (startButton == null) return;
 
+    let lastRound: IRound | null = null;
+
     startButton.addEventListener("click", () => {
-        var gameWindow = window.open("", "", "width=1000,height=600");
+        var gameWindow = window.open("", "", "width=1920,height=1080;fullscreen=1");
         if (gameWindow == null) {
             console.log("ERROR: cant open window");
             return;
@@ -37,13 +28,15 @@ const main = () => {
             <title>Crocodile game</title>
         </head>
 
-        <div class="round"></div>
+        <div class="round_0"></div>
+        <div class="round_2"></div>
 
         </body>
         </html>
         `);
 
         const startRoundButtons = document.querySelectorAll(".start_round_button");
+
         startRoundButtons.forEach(btn => {
             btn.addEventListener("click", () => {
                 const val = btn.getAttribute("value");
@@ -52,21 +45,32 @@ const main = () => {
                 console.log(roundNumber);
 
                 const roundControlDiv = document.querySelector(".roundControl");
-                const roundDiv = gameWindow?.document.querySelector(".round");
-                if (roundDiv == null) return;
+                // const roundDiv = gameWindow?.document.querySelector(".round");
                 if (roundControlDiv == null) return;
+                let roundDiv;
+
+                if (lastRound !== null)
+                    lastRound.clear();
 
                 switch (roundNumber) {
                     case 0:
-                        round_0(roundDiv, roundControlDiv);
+                        roundDiv = gameWindow?.document.querySelector(".round_0");
+                        if (roundDiv == null) return;
+                        lastRound = new Round0();
+                        lastRound.start(roundDiv, roundControlDiv);
+                        // round_0(roundDiv, roundControlDiv);
                         break;
 
                     case 2:
                         // round_2(roundDiv, roundControlDiv);
-                        new Round2().start(roundDiv, roundControlDiv);
+                        roundDiv = gameWindow?.document.querySelector(".round_2");
+                        if (roundDiv == null) return;
+                        lastRound = new Round2();
+                        lastRound.start(roundDiv, roundControlDiv);
                         break;
 
                     default:
+                        lastRound = null;
                         break;
                 }
             });
