@@ -1,5 +1,7 @@
 import { IRound } from "./IRound";
+import { Logger } from "./Logger";
 import { Round0 } from "./Round0";
+import { Round1 } from "./Round1";
 import { Round2 } from "./Round2";
 
 const main = () => {
@@ -9,6 +11,13 @@ const main = () => {
     if (startButton == null) return;
 
     let lastRound: IRound | null = null;
+
+    const rounds = {
+        0: new Round0("Logo", "", 0, [], ""),
+        1: new Round1("", "", 0, [], ""),
+        2: new Round2("Тематический раунд", "5 тем по 5 слов", 90, [10, 15, 20, 25, 30], "Команды показывают по очереди, до теч пор, пока не исчерпают время"),
+
+    };
 
     startButton.addEventListener("click", () => {
         var gameWindow = window.open("", "", "width=1920,height=1080;fullscreen=1");
@@ -29,6 +38,7 @@ const main = () => {
         </head>
 
         <div class="round_0"></div>
+        <div class="round_1"></div>
         <div class="round_2"></div>
 
         </body>
@@ -56,16 +66,24 @@ const main = () => {
                     case 0:
                         roundDiv = gameWindow?.document.querySelector(".round_0");
                         if (roundDiv == null) return;
-                        lastRound = new Round0();
+                        lastRound = rounds[0];
                         lastRound.start(roundDiv, roundControlDiv);
                         // round_0(roundDiv, roundControlDiv);
+                        break;
+
+                    case 1:
+                        roundDiv = gameWindow?.document.querySelector(".round_1");
+                        if (roundDiv == null) return;
+                        lastRound = rounds[1];
+                        (<Round1>lastRound).Round = rounds[2];
+                        lastRound.start(roundDiv, roundControlDiv);
                         break;
 
                     case 2:
                         // round_2(roundDiv, roundControlDiv);
                         roundDiv = gameWindow?.document.querySelector(".round_2");
                         if (roundDiv == null) return;
-                        lastRound = new Round2();
+                        lastRound = rounds[2];
                         lastRound.start(roundDiv, roundControlDiv);
                         break;
 
@@ -95,6 +113,18 @@ const main = () => {
     });
 
 }
+
+const lll = document.querySelector(".log");
+const lllc = document.querySelector(".log_autoscroll");
+if (lll && lllc) {
+    new Logger(lll, lllc);
+    // document.querySelector(".TEST")?.addEventListener("click", () => {
+    //     Logger.logger.log("ASdasd");
+    // });
+} else {
+    console.log("CAN'T CREATE LOGGER INSTANCE!");
+}
+
 main();
 
 

@@ -2,18 +2,76 @@ define("IRound", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
 });
-define("Round0", ["require", "exports"], function (require, exports) {
+define("Logger", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Round0 = void 0;
-    class Round0 {
-        constructor() {
+    exports.Logger = void 0;
+    class Logger {
+        constructor(logBox, checkbox) {
+            this.messageTemplate = `
+    <p class="log_message"><span class="log_message_time">[{time}]</span> {text}</p>
+    `;
+            this.logBox = logBox;
+            this.checkbox = checkbox;
+            if (!Logger.created) {
+                Logger.logger = this;
+                Logger.created = true;
+            }
+            else {
+                Logger.logger.log("ERROR: Instance of logger already created!");
+            }
+        }
+        log(message) {
+            const d = new Date();
+            let p = document.createElement("p");
+            p.classList.add(".log_message");
+            p.innerHTML = `
+            <span class="log_message_time">[${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}:${d.getSeconds().toString().padStart(2, "0")}]</span> ${message}
+        `;
+            const flag = this.logBox.scrollTop == this.logBox.scrollHeight;
+            console.log(this.logBox.scrollTop, this.logBox.scrollHeight);
+            this.logBox.appendChild(p);
+            if (this.checkbox.checked)
+                this.logBox.scrollTop = this.logBox.scrollHeight;
+        }
+    }
+    exports.Logger = Logger;
+    Logger.created = false;
+});
+define("RoundBase", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.RoundBase = void 0;
+    class RoundBase {
+        constructor(name, taskDescription, time, scorePerWord, teamTask) {
             this.roundDiv = null;
             this.roundControlDiv = null;
+            this.name = name;
+            this.taskDescription = taskDescription;
+            this.time = time;
+            this.scorePerWord = scorePerWord;
+            this.teamTask = teamTask;
         }
         start(roundDiv, roundControlDiv) {
             this.roundDiv = roundDiv;
             this.roundControlDiv = roundControlDiv;
+        }
+        clear() {
+            if (this.roundDiv != null)
+                this.roundDiv.innerHTML = "";
+            if (this.roundControlDiv != null)
+                this.roundControlDiv.innerHTML = "";
+        }
+    }
+    exports.RoundBase = RoundBase;
+});
+define("Round0", ["require", "exports", "RoundBase"], function (require, exports, RoundBase_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Round0 = void 0;
+    class Round0 extends RoundBase_1.RoundBase {
+        start(roundDiv, roundControlDiv) {
+            super.start(roundDiv, roundControlDiv);
             roundDiv.innerHTML = "";
             roundControlDiv.innerHTML = "";
             roundDiv.innerHTML = `
@@ -23,27 +81,57 @@ define("Round0", ["require", "exports"], function (require, exports) {
             </div>
         `;
         }
-        clear() {
-            if (this.roundDiv != null)
-                this.roundDiv.innerHTML = "";
-            if (this.roundControlDiv != null)
-                this.roundControlDiv.innerHTML = "";
-        }
     }
     exports.Round0 = Round0;
 });
-define("Round2", ["require", "exports"], function (require, exports) {
+define("Round1", ["require", "exports", "Logger", "RoundBase"], function (require, exports, Logger_1, RoundBase_2) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Round1 = void 0;
+    class Round1 extends RoundBase_2.RoundBase {
+        constructor() {
+            super(...arguments);
+            this.round = null;
+        }
+        set Round(round) {
+            this.round = round;
+        }
+        start(roundDiv, roundControlDiv) {
+            super.start(roundDiv, roundControlDiv);
+            if (this.round == null) {
+                Logger_1.Logger.logger.log("ERROR: No round specified!");
+                return;
+            }
+            roundDiv.innerHTML = `
+            <p class="round_info name">${this.round.name}</p>
+            <p class="round_info task">Задания: <br/ >${this.round.taskDescription}</p>
+            <p class="round_info time">Время: <br/ >${this.round.time} секунд</p>
+            <p class="round_info score">Стоимость отгаданного слова: <br/ >${this.round.scorePerWord} баллов</p>
+            <p class="round_info team_task">Задача команды: <br/ >${this.round.teamTask}</p>
+        `;
+            let t = 0;
+            roundDiv.querySelectorAll(".round_info").forEach(p => {
+                console.log(p);
+                t += 1000;
+                setTimeout(() => {
+                    p.classList.add("show");
+                }, t);
+                setTimeout(() => {
+                    p.classList.add("hide");
+                }, t + 2000 + (p.classList.contains("team_task") ? 1000 : 0));
+                t += 2500;
+            });
+        }
+    }
+    exports.Round1 = Round1;
+});
+define("Round2", ["require", "exports", "RoundBase"], function (require, exports, RoundBase_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Round2 = void 0;
-    class Round2 {
-        constructor() {
-            this.roundDiv = null;
-            this.roundControlDiv = null;
-        }
+    class Round2 extends RoundBase_3.RoundBase {
         start(roundDiv, roundControlDiv) {
-            this.roundDiv = roundDiv;
-            this.roundControlDiv = roundControlDiv;
+            super.start(roundDiv, roundControlDiv);
             class Card {
                 constructor(word, points) {
                     this.word = word;
@@ -202,16 +290,10 @@ define("Round2", ["require", "exports"], function (require, exports) {
                 });
             });
         }
-        clear() {
-            if (this.roundDiv != null)
-                this.roundDiv.innerHTML = "";
-            if (this.roundControlDiv != null)
-                this.roundControlDiv.innerHTML = "";
-        }
     }
     exports.Round2 = Round2;
 });
-define("main", ["require", "exports", "Round0", "Round2"], function (require, exports, Round0_1, Round2_1) {
+define("main", ["require", "exports", "Logger", "Round0", "Round1", "Round2"], function (require, exports, Logger_2, Round0_1, Round1_1, Round2_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const main = () => {
@@ -219,6 +301,11 @@ define("main", ["require", "exports", "Round0", "Round2"], function (require, ex
         if (startButton == null)
             return;
         let lastRound = null;
+        const rounds = {
+            0: new Round0_1.Round0("Logo", "", 0, [], ""),
+            1: new Round1_1.Round1("", "", 0, [], ""),
+            2: new Round2_1.Round2("Тематический раунд", "5 тем по 5 слов", 90, [10, 15, 20, 25, 30], "Команды показывают по очереди, до теч пор, пока не исчерпают время"),
+        };
         startButton.addEventListener("click", () => {
             var _a;
             var gameWindow = window.open("", "", "width=1920,height=1080;fullscreen=1");
@@ -238,6 +325,7 @@ define("main", ["require", "exports", "Round0", "Round2"], function (require, ex
         </head>
 
         <div class="round_0"></div>
+        <div class="round_1"></div>
         <div class="round_2"></div>
 
         </body>
@@ -263,16 +351,24 @@ define("main", ["require", "exports", "Round0", "Round2"], function (require, ex
                             roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round_0");
                             if (roundDiv == null)
                                 return;
-                            lastRound = new Round0_1.Round0();
+                            lastRound = rounds[0];
                             lastRound.start(roundDiv, roundControlDiv);
                             // round_0(roundDiv, roundControlDiv);
+                            break;
+                        case 1:
+                            roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round_1");
+                            if (roundDiv == null)
+                                return;
+                            lastRound = rounds[1];
+                            lastRound.Round = rounds[2];
+                            lastRound.start(roundDiv, roundControlDiv);
                             break;
                         case 2:
                             // round_2(roundDiv, roundControlDiv);
                             roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round_2");
                             if (roundDiv == null)
                                 return;
-                            lastRound = new Round2_1.Round2();
+                            lastRound = rounds[2];
                             lastRound.start(roundDiv, roundControlDiv);
                             break;
                         default:
@@ -296,5 +392,16 @@ define("main", ["require", "exports", "Round0", "Round2"], function (require, ex
             });
         });
     };
+    const lll = document.querySelector(".log");
+    const lllc = document.querySelector(".log_autoscroll");
+    if (lll && lllc) {
+        new Logger_2.Logger(lll, lllc);
+        // document.querySelector(".TEST")?.addEventListener("click", () => {
+        //     Logger.logger.log("ASdasd");
+        // });
+    }
+    else {
+        console.log("CAN'T CREATE LOGGER INSTANCE!");
+    }
     main();
 });

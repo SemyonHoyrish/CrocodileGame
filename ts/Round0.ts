@@ -1,13 +1,11 @@
 import { IRound } from "./IRound";
+import { RoundBase } from "./RoundBase";
 
-export class Round0 implements IRound {
+export class Round0 extends RoundBase {
 
-    private roundDiv: Element | null = null;
-    private roundControlDiv: Element | null = null;
 
     start(roundDiv: Element, roundControlDiv: Element): void {
-        this.roundDiv = roundDiv;
-        this.roundControlDiv = roundControlDiv;
+        super.start(roundDiv, roundControlDiv);
 
         roundDiv.innerHTML = "";
         roundControlDiv.innerHTML = "";
@@ -19,14 +17,6 @@ export class Round0 implements IRound {
             </div>
         `;
 
-    }
-    
-    clear(): void {
-        if (this.roundDiv != null)
-            this.roundDiv.innerHTML = "";
-        
-        if (this.roundControlDiv != null)
-            this.roundControlDiv.innerHTML = "";
     }
     
 }
