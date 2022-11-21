@@ -1,0 +1,223 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ROUND 0 */
+
+/* .round {
+    width: 100%;
+    height: 100%;
+    display: flex;
+} */
+
+.logo-animation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.logo-animation img {
+    animation: logo_animation_img 1s;
+    width: 500px;
+    transform: translateX(-100px);
+}
+
+.logo-animation h1 {
+    animation: logo_animation_text 1s;
+    font-size: 80px;
+    transform: translateX(50px);
+}
+
+@keyframes logo_animation_img {
+    0% {
+        width: 0px;
+    }
+    10% {
+        width: 100px;
+        transform: translateX(0);
+    }
+
+    100% {
+        width: 500px;
+        transform: translateX(-100px);
+    }
+}
+@keyframes logo_animation_text {
+    0% {
+        position: absolute;
+        opacity: 0;
+        font-size: 0px;
+        transform: translateX(-150px);
+    }
+    10% {
+        position: relative;
+        opacity: 1;
+        font-size: 0px;
+        transform: translateX(-150px);
+    }
+
+    100% {
+        font-size: 80px;
+        transform: translateX(50px);
+    }
+}
+
+
+/* ROUND 2 */
+
+.controls {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    flex-direction: column;
+}
+.controls .start_round_button {
+    height: 30px;
+    font-size: 18px;
+}
+
+
+.category {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+.card {
+    height: 100px;
+    width: 200px;
+    background-color: rgb(4, 146, 146);
+    border-radius: 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+
+    font-size: 22px;
+
+    margin: 10px;
+
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+
+.card.correct {
+    background-color: green;
+}
+.card.skip {
+    background-color: grey;
+}
+.card.incorrect {
+    background-color: red;
+}
+
+.round .card .points {
+    display: block;
+}
+.round .card .word {
+    display: none;
+}
+
+
+.round .card {
+    transition: all 1s;
+    /* position: relative; */
+}
+
+.round .card.card.shown {
+    /* position: absolute; */
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    margin: 0;
+}
+
+.round .card.shown .points {
+    display: none;
+}
+.round .card.shown .word {
+    display: block;
+}
+
+
+.round .card_word_view {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    bottom: 50%;
+    left: 50%;
+    background-color: black;
+    height: 0px;
+    width: 0px;
+    font-size: 0px;
+    color: #ffffff;
+    transition: all 1s;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    /* text-align: center; */
+}
+.round .card_word_view .category-info {
+    position: absolute;
+    top: 0;
+}
+.round .card_word_view .category {
+    display: inline;
+}
+.round .card_word_view .word {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+.round .card_word_view.active {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    font-size: 30px;
+}
+
+
+.roundControl .card {
+    cursor: pointer;
+    
+}
+
+
+
+
+
