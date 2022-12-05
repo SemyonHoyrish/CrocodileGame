@@ -170,14 +170,26 @@ export class Round2 extends RoundBase {
                     // const cardWordView = roundDiv.querySelector(".card_word_view");
     
                     if (btn.classList.contains("correct")) {
+                        current_card.classList.remove("correct");
+                        current_card.classList.remove("skip");
+                        current_card.classList.remove("incorrect");
+                        
                         current_card.classList.add("correct");
                         cardWordView.classList.add("correct");
                         roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)?.classList.add("correct");
                     } else if (btn.classList.contains("skip")) {
+                        current_card.classList.remove("correct");
+                        current_card.classList.remove("skip");
+                        current_card.classList.remove("incorrect");
+                        
                         current_card.classList.add("skip");
                         cardWordView.classList.add("skip");
                         roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)?.classList.add("skip");
                     } else if (btn.classList.contains("incorrect")) {
+                        current_card.classList.remove("correct");
+                        current_card.classList.remove("skip");
+                        current_card.classList.remove("incorrect");
+                        
                         current_card.classList.add("incorrect");
                         cardWordView.classList.add("incorrect");
                         roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)?.classList.add("incorrect");

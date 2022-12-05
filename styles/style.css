@@ -5,6 +5,12 @@
 html, body {
     margin: 0;
     padding: 0;
+    /* background-image: url("../media/images/bg.jpg"); */
+    background-size: cover;
+}
+
+#gameWindowBody {
+    background-image: url("../media/images/bg.jpg");
 }
 
 
@@ -18,6 +24,7 @@ html, body {
 .controls .start_round_button {
     height: 30px;
     font-size: 18px;
+    text-align: left;
 }
 
 .log {
@@ -78,8 +85,10 @@ html, body {
 }
 
 .round_0 .logo-animation h1 {
+    font-family: sans-serif;
+    color: #0f3400;
     animation: logo_animation_text 1s;
-    font-size: 80px;
+    font-size: 100px;
     transform: translateX(50px);
 }
 
@@ -112,7 +121,7 @@ html, body {
     }
 
     100% {
-        font-size: 80px;
+        font-size: 100px;
         transform: translateX(50px);
     }
 }
@@ -129,6 +138,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .round_info {
@@ -137,6 +147,7 @@ html, body {
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: #0f3400;
     font-size: 80px;
 
     transform: translateY(-1000px);
@@ -154,7 +165,7 @@ html, body {
 }
 
 
-/* ROUND 2 */
+/* ROUND 4 */
 
 
 .category {
@@ -163,7 +174,7 @@ html, body {
     align-items: center;
 }
 
-.round_2 .card {
+.round_4 .card {
     height: 200px;
     width: 400px;
     font-size: 50px;
@@ -178,7 +189,8 @@ html, body {
 .card {
 
 
-    background-color: rgb(4, 146, 146);
+    /* background-color: rgb(4, 146, 146); */
+    background-color: rgb(117 48 199);
     border-radius: 15px;
 
     display: flex;
@@ -198,7 +210,7 @@ html, body {
     text-align: center;
 }
 
-.round_2 {
+.round_4 {
     position: absolute;
     top: 0;
     right: 0;
@@ -211,30 +223,30 @@ html, body {
 }
 
 
-.round_2 .card.correct {
+.round_4 .card.correct {
     background-color: green;
 }
-.round_2 .card.skip {
+.round_4 .card.skip {
     background-color: grey;
 }
-.round_2 .card.incorrect {
+.round_4 .card.incorrect {
     background-color: red;
 }
 
-.round_2 .card .points {
+.round_4 .card .points {
     display: block;
 }
-.round_2 .card .word {
+.round_4 .card .word {
     display: none;
 }
 
 
-.round_2 .card {
+.round_4 .card {
     transition: all 1s;
     /* position: relative; */
 }
 
-.round_2 .card.card.shown {
+.round_4 .card.card.shown {
     /* position: absolute; */
     top: 0;
     right: 0;
@@ -246,21 +258,23 @@ html, body {
     margin: 0;
 }
 
-.round_2 .card.shown .points {
+.round_4 .card.shown .points {
     display: none;
 }
-.round_2 .card.shown .word {
+.round_4 .card.shown .word {
     display: block;
 }
 
 
-.round_2 .card_word_view {
+.round_4 .card_word_view {
     position: absolute;
     top: 50%;
     right: 50%;
     bottom: 50%;
     left: 50%;
-    background-color: rgb(106, 215, 184);
+    /* background-color: rgb(106, 215, 184); */
+    background-image: url("../media/images/snow_bg.jpg");
+    background-size: cover;
     height: 0px;
     width: 0px;
     font-size: 0px;
@@ -273,15 +287,16 @@ html, body {
     align-items: center;
     /* text-align: center; */
 }
-.round_2 .card_word_view .category-info {
+.round_4 .card_word_view .category-info {
     position: absolute;
     top: 0;
+    margin-top: 40px;
 }
-.round_2 .card_word_view .category {
+.round_4 .card_word_view .category {
     transition: all 1s;
     display: inline;
 }
-.round_2 .card_word_view .word {
+.round_4 .card_word_view .word {
     transition: all 1s;
     height: 100%;
     width: 100%;
@@ -290,7 +305,7 @@ html, body {
     align-items: center;
     position: absolute;
 }
-.round_2 .card_word_view.active {
+.round_4 .card_word_view.active {
     top: 0;
     right: 0;
     bottom: 0;
@@ -298,20 +313,20 @@ html, body {
     height: 100%;
     width: 100%;
 }
-.round_2 .card_word_view.active .category {
-    font-size: 60px;
+.round_4 .card_word_view.active .category {
+    font-size: 80px;
 }
-.round_2 .card_word_view.active .word {
-    font-size: 100px;
+.round_4 .card_word_view.active .word {
+    font-size: 160px;
 }
 
-.round_2 .card_word_view.correct {
+.round_4 .card_word_view.correct {
     background-color: green;
 }
-.round_2 .card_word_view.skip {
+.round_4 .card_word_view.skip {
     background-color: grey;
 }
-.round_2 .card_word_view.incorrect {
+.round_4 .card_word_view.incorrect {
     background-color: red;
 }
 
@@ -323,4 +338,27 @@ html, body {
 
 
 
+
+.round_6 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.round_6 .word {
+    color: #0f3400;
+    font-size: 140px;
+    font-weight: 900;
+    transition: all 0.5s;
+    opacity: 1;
+}
+.round_6 .word.hidden {
+    opacity: 0;
+}
 

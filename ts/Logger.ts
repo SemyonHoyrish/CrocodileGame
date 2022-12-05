@@ -1,6 +1,6 @@
 export class Logger {
 
-    static logger: Logger;
+    static instance: Logger;
     private static created: boolean = false;
     
     private logBox: Element;
@@ -14,11 +14,11 @@ export class Logger {
         this.checkbox = checkbox;
 
         if(!Logger.created) {
-            Logger.logger = this;
+            Logger.instance = this;
             Logger.created = true;
         }
         else {
-            Logger.logger.log("ERROR: Instance of logger already created!");
+            Logger.instance.log("ERROR: Instance of logger already created!");
         }
     }
 

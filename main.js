@@ -14,11 +14,11 @@ define("Logger", ["require", "exports"], function (require, exports) {
             this.logBox = logBox;
             this.checkbox = checkbox;
             if (!Logger.created) {
-                Logger.logger = this;
+                Logger.instance = this;
                 Logger.created = true;
             }
             else {
-                Logger.logger.log("ERROR: Instance of logger already created!");
+                Logger.instance.log("ERROR: Instance of logger already created!");
             }
         }
         log(message) {
@@ -76,7 +76,7 @@ define("Round0", ["require", "exports", "RoundBase"], function (require, exports
             roundControlDiv.innerHTML = "";
             roundDiv.innerHTML = `
             <div class="logo-animation"> 
-                <img src="./media/images/crocodile-transparent-png.png" />
+                <img src="./media/images/cr_2.png" />
                 <h1>Игра - крокодил</h1>
             </div>
         `;
@@ -99,7 +99,7 @@ define("Round1", ["require", "exports", "Logger", "RoundBase"], function (requir
         start(roundDiv, roundControlDiv) {
             super.start(roundDiv, roundControlDiv);
             if (this.round == null) {
-                Logger_1.Logger.logger.log("ERROR: No round specified!");
+                Logger_1.Logger.instance.log("ERROR: No round specified!");
                 return;
             }
             roundDiv.innerHTML = `
@@ -264,16 +264,25 @@ define("Round2", ["require", "exports", "RoundBase"], function (require, exports
                     if (current_card_id != 0) {
                         // const cardWordView = roundDiv.querySelector(".card_word_view");
                         if (btn.classList.contains("correct")) {
+                            current_card.classList.remove("correct");
+                            current_card.classList.remove("skip");
+                            current_card.classList.remove("incorrect");
                             current_card.classList.add("correct");
                             cardWordView.classList.add("correct");
                             (_a = roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)) === null || _a === void 0 ? void 0 : _a.classList.add("correct");
                         }
                         else if (btn.classList.contains("skip")) {
+                            current_card.classList.remove("correct");
+                            current_card.classList.remove("skip");
+                            current_card.classList.remove("incorrect");
                             current_card.classList.add("skip");
                             cardWordView.classList.add("skip");
                             (_b = roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)) === null || _b === void 0 ? void 0 : _b.classList.add("skip");
                         }
                         else if (btn.classList.contains("incorrect")) {
+                            current_card.classList.remove("correct");
+                            current_card.classList.remove("skip");
+                            current_card.classList.remove("incorrect");
                             current_card.classList.add("incorrect");
                             cardWordView.classList.add("incorrect");
                             (_c = roundControlDiv.querySelector(`#card_id_${current_card_id}.card`)) === null || _c === void 0 ? void 0 : _c.classList.add("incorrect");
@@ -293,7 +302,80 @@ define("Round2", ["require", "exports", "RoundBase"], function (require, exports
     }
     exports.Round2 = Round2;
 });
-define("main", ["require", "exports", "Logger", "Round0", "Round1", "Round2"], function (require, exports, Logger_2, Round0_1, Round1_1, Round2_1) {
+define("Round6", ["require", "exports", "Logger", "RoundBase"], function (require, exports, Logger_2, RoundBase_4) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Round6 = void 0;
+    class Round6 extends RoundBase_4.RoundBase {
+        constructor() {
+            super(...arguments);
+            this.words = [
+                "",
+                "Знакомство",
+                "",
+                "Ссора",
+                "",
+                "Забастовка",
+                ""
+            ];
+        }
+        start(roundDiv, roundControlDiv) {
+            var _a, _b;
+            super.start(roundDiv, roundControlDiv);
+            roundControlDiv.innerHTML = `
+            <p class="word_info"></p>
+            <button class="previous">previous</button>
+            <button class="next">next</button>
+        `;
+            roundDiv.innerHTML = `<p class="word"><p>`;
+            const word = roundDiv.querySelector(".word");
+            const word_info = roundControlDiv.querySelector(".word_info");
+            if (word == null || word_info == null) {
+                Logger_2.Logger.instance.log("ERROR: no word block found!");
+                return;
+            }
+            let index = 0;
+            const get_word_info = (index) => {
+                const is_empty = this.words[index] == "";
+                return `(${index + 1}/${this.words.length}|${is_empty ? "-" : (index + 1) / 2}/${(this.words.length - 1) / 2})${is_empty ? "(empty)" : this.words[index]}`;
+            };
+            (_a = roundControlDiv.querySelector(".next")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
+                word.classList.add("hidden");
+                setTimeout(() => {
+                    setTimeout(() => {
+                        word.classList.remove("hidden");
+                    }, 500);
+                    if (index + 1 < this.words.length) {
+                        word.innerHTML = this.words[++index];
+                        word_info.innerHTML = get_word_info(index);
+                    }
+                    else {
+                        word.innerHTML = "";
+                        word_info.innerHTML = "(out of array bounds)";
+                    }
+                }, 500);
+            });
+            (_b = roundControlDiv.querySelector(".previous")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => {
+                word.classList.add("hidden");
+                setTimeout(() => {
+                    setTimeout(() => {
+                        word.classList.remove("hidden");
+                    }, 500);
+                    if (index - 1 >= 0) {
+                        word.innerHTML = this.words[--index];
+                        word_info.innerHTML = get_word_info(index);
+                    }
+                    else {
+                        word.innerHTML = "";
+                        word_info.innerHTML = "(out of array bounds)";
+                    }
+                }, 500);
+            });
+        }
+    }
+    exports.Round6 = Round6;
+});
+define("main", ["require", "exports", "Logger", "Round0", "Round1", "Round2", "Round6"], function (require, exports, Logger_3, Round0_1, Round1_1, Round2_1, Round6_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const main = () => {
@@ -304,7 +386,9 @@ define("main", ["require", "exports", "Logger", "Round0", "Round1", "Round2"], f
         const rounds = {
             0: new Round0_1.Round0("Logo", "", 0, [], ""),
             1: new Round1_1.Round1("", "", 0, [], ""),
-            2: new Round2_1.Round2("Тематический раунд", "5 тем по 5 слов", 90, [10, 15, 20, 25, 30], "Команды показывают по очереди, до теч пор, пока не исчерпают время"),
+            2: new Round0_1.Round0("РАЗМИНКА", "", 0, [], ""),
+            4: new Round2_1.Round2("Тематический раунд", "5 тем по 5 слов", 90, [10, 15, 20, 25, 30], "Команды показывают по очереди, до тех пор, пока не исчерпают время"),
+            6: new Round6_1.Round6("СЛОЖНЫЙ", "", 0, [], ""),
         };
         startButton.addEventListener("click", () => {
             var _a;
@@ -324,9 +408,13 @@ define("main", ["require", "exports", "Logger", "Round0", "Round1", "Round2"], f
             <title>Crocodile game</title>
         </head>
 
+        <body id="gameWindowBody">
+
         <div class="round_0"></div>
         <div class="round_1"></div>
         <div class="round_2"></div>
+        <div class="round_4"></div>
+        <div class="round_6"></div>
 
         </body>
         </html>
@@ -371,6 +459,38 @@ define("main", ["require", "exports", "Logger", "Round0", "Round1", "Round2"], f
                             lastRound = rounds[2];
                             lastRound.start(roundDiv, roundControlDiv);
                             break;
+                        case 3:
+                            roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round_1");
+                            if (roundDiv == null)
+                                return;
+                            lastRound = rounds[1];
+                            lastRound.Round = rounds[4];
+                            lastRound.start(roundDiv, roundControlDiv);
+                            break;
+                        case 4:
+                            // round_2(roundDiv, roundControlDiv);
+                            roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round_4");
+                            if (roundDiv == null)
+                                return;
+                            lastRound = rounds[4];
+                            lastRound.start(roundDiv, roundControlDiv);
+                            break;
+                        case 5:
+                            roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round_1");
+                            if (roundDiv == null)
+                                return;
+                            lastRound = rounds[1];
+                            lastRound.Round = rounds[6];
+                            lastRound.start(roundDiv, roundControlDiv);
+                            break;
+                        case 6:
+                            // round_2(roundDiv, roundControlDiv);
+                            roundDiv = gameWindow === null || gameWindow === void 0 ? void 0 : gameWindow.document.querySelector(".round_6");
+                            if (roundDiv == null)
+                                return;
+                            lastRound = rounds[6];
+                            lastRound.start(roundDiv, roundControlDiv);
+                            break;
                         default:
                             lastRound = null;
                             break;
@@ -395,7 +515,7 @@ define("main", ["require", "exports", "Logger", "Round0", "Round1", "Round2"], f
     const lll = document.querySelector(".log");
     const lllc = document.querySelector(".log_autoscroll");
     if (lll && lllc) {
-        new Logger_2.Logger(lll, lllc);
+        new Logger_3.Logger(lll, lllc);
         // document.querySelector(".TEST")?.addEventListener("click", () => {
         //     Logger.logger.log("ASdasd");
         // });

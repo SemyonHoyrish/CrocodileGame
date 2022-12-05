@@ -14,7 +14,7 @@ export class Round1 extends RoundBase {
         super.start(roundDiv, roundControlDiv);
 
         if (this.round == null) {
-            Logger.logger.log("ERROR: No round specified!");
+            Logger.instance.log("ERROR: No round specified!");
             return;
         }
 

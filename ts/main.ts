@@ -3,6 +3,7 @@ import { Logger } from "./Logger";
 import { Round0 } from "./Round0";
 import { Round1 } from "./Round1";
 import { Round2 } from "./Round2";
+import { Round6 } from "./Round6";
 
 const main = () => {
 
@@ -15,7 +16,9 @@ const main = () => {
     const rounds = {
         0: new Round0("Logo", "", 0, [], ""),
         1: new Round1("", "", 0, [], ""),
-        2: new Round2("Тематический раунд", "5 тем по 5 слов", 90, [10, 15, 20, 25, 30], "Команды показывают по очереди, до теч пор, пока не исчерпают время"),
+        2: new Round0("РАЗМИНКА", "", 0, [], ""),
+        4: new Round2("Тематический раунд", "5 тем по 5 слов", 90, [10, 15, 20, 25, 30], "Команды показывают по очереди, до тех пор, пока не исчерпают время"),
+        6: new Round6("СЛОЖНЫЙ", "", 0, [], ""),
 
     };
 
@@ -37,9 +40,13 @@ const main = () => {
             <title>Crocodile game</title>
         </head>
 
+        <body id="gameWindowBody">
+
         <div class="round_0"></div>
         <div class="round_1"></div>
         <div class="round_2"></div>
+        <div class="round_4"></div>
+        <div class="round_6"></div>
 
         </body>
         </html>
@@ -84,6 +91,38 @@ const main = () => {
                         roundDiv = gameWindow?.document.querySelector(".round_2");
                         if (roundDiv == null) return;
                         lastRound = rounds[2];
+                        lastRound.start(roundDiv, roundControlDiv);
+                        break;
+
+                    case 3:
+                        roundDiv = gameWindow?.document.querySelector(".round_1");
+                        if (roundDiv == null) return;
+                        lastRound = rounds[1];
+                        (<Round1>lastRound).Round = rounds[4];
+                        lastRound.start(roundDiv, roundControlDiv);
+                        break;
+                    
+                    case 4:
+                        // round_2(roundDiv, roundControlDiv);
+                        roundDiv = gameWindow?.document.querySelector(".round_4");
+                        if (roundDiv == null) return;
+                        lastRound = rounds[4];
+                        lastRound.start(roundDiv, roundControlDiv);
+                        break;
+
+                    case 5:
+                        roundDiv = gameWindow?.document.querySelector(".round_1");
+                        if (roundDiv == null) return;
+                        lastRound = rounds[1];
+                        (<Round1>lastRound).Round = rounds[6];
+                        lastRound.start(roundDiv, roundControlDiv);
+                        break;
+
+                    case 6:
+                        // round_2(roundDiv, roundControlDiv);
+                        roundDiv = gameWindow?.document.querySelector(".round_6");
+                        if (roundDiv == null) return;
+                        lastRound = rounds[6];
                         lastRound.start(roundDiv, roundControlDiv);
                         break;
 

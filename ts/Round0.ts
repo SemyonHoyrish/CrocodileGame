@@ -12,7 +12,7 @@ export class Round0 extends RoundBase {
 
         roundDiv.innerHTML = `
             <div class="logo-animation"> 
-                <img src="./media/images/crocodile-transparent-png.png" />
+                <img src="./media/images/cr_2.png" />
                 <h1>Игра - крокодил</h1>
             </div>
         `;
